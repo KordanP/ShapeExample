@@ -1,15 +1,13 @@
 import mesa
 
-from .model import ShapeExample, Walker
+from .model import ShapeExample, Walker, Wall
 
 
 def agent_draw(agent):
     portrayal = None
-    if agent is None:
-        # Actually this if part is unnecessary, but still keeping it for
-        # aesthetics
-        pass
-    elif isinstance(agent, Walker):
+
+    # Перевірка, якщо агент — Walker
+    if isinstance(agent, Walker):
         print(f"Uid: {agent.unique_id}, Heading: {agent.heading}")
         portrayal = {
             "Shape": "arrowHead",
@@ -23,13 +21,23 @@ def agent_draw(agent):
             "text_color": "white",
             "scale": 0.8,
         }
+
+    # Те як буде відображатись стіна
+    elif isinstance(agent, Wall):
+        portrayal = {
+            "Shape": "circle",
+            "Filled": "true",
+            "Layer": 1,
+            "Color": "blue",
+            "r": 0.5
+        }
+
     return portrayal
 
-
-width = 15
-height = 10
-num_agents = 2
-pixel_ratio = 50
+width = 100
+height = 80
+num_agents = 100
+pixel_ratio = 10
 grid = mesa.visualization.CanvasGrid(
     agent_draw, width, height, width * pixel_ratio, height * pixel_ratio
 )
